@@ -1,0 +1,9 @@
+{
+  "name": "Dispatch Service",
+  "version": "1.0.0",
+  "description": "API for Dispatch Service.",
+  "apidoc": {
+    "title": "Dispatch Service API",
+    "url" : "https://api.github.com/v1"
+  }
+}
