@@ -1,6 +1,7 @@
 import AssignedAction from '../models/assignedAction';
 import mongoose from 'mongoose';
 import request from 'request';
+import Nexmo from 'nexmo';
 
 const getAction = (id, callback) => {
   return AssignedAction.findOne({ _id: id }, callback);
@@ -67,6 +68,35 @@ const deleteAction = (id, callback) => {
   AssignedAction.findOneAndRemove({ _id: id }, callback);
 };
 
+const TextMessenger = (filter, callback) => {
+  console.log('11111111111111111');
+  var nexmo = new Nexmo(
+    {
+      apiKey: '067908e3',
+      apiSecret: '2c0080ec581afde4',
+    },
+    { debug: true }
+  );
+
+  nexmo.message.sendSms(
+    filter.from,
+    filter.to,
+    filter.text,
+    { type: 'unicode' },
+    (err, response) => {
+      if (response) {
+        console.log('responseeeeeeeeeeeeeee');
+        //return response.status(200).json({ s: 1 });
+        response.write('called');
+      }
+      if (err) {
+        console.log('errorrrrrrrrrrrrrrrr');
+        console.log(err);
+      }
+    }
+  );
+};
+
 module.exports = {
   addAction: addAction,
   getAction: getAction,
@@ -74,4 +104,5 @@ module.exports = {
   updateAction: updateAction,
   deleteAction: deleteAction,
   getProfile: getProfile,
+  TextMessenger: TextMessenger,
 };
