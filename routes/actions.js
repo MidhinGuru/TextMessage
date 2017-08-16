@@ -285,19 +285,22 @@ router.post('/', (req, response) => {
             var to = '919995727516';
             var text = 'A text message sent using the Nexmo SMS API';
 
-            //  nexmo.message.sendSms(
-            //   from,to, text, {type: 'unicode'},
-            //   (err, responseData) =>
-            //    {if (responseData) {
-            //      console.log('responseeeeeeeeeeeeeee');
-            //      console.log(responseData);
-            //     }
-            //     if(err){
-            //       console.log('errorrrrrrrrrrrrrrrr');
-            //       console.log(err);
-            //     }
-            //   }
-            // );
+            nexmo.message.sendSms(
+              from,
+              to,
+              text,
+              { type: 'unicode' },
+              (err, responseData) => {
+                if (responseData) {
+                  console.log('responseeeeeeeeeeeeeee');
+                  console.log(responseData);
+                }
+                if (err) {
+                  console.log('errorrrrrrrrrrrrrrrr');
+                  console.log(err);
+                }
+              }
+            );
 
             console.log('nexmo1111111111111111');
 
@@ -306,27 +309,27 @@ router.post('/', (req, response) => {
             //   //console.log(response);
             //   console.log(error);
             // });
-            let messageBody = {
-              from: 'Nexmo',
-              test: 'welcome to nexmo',
-              to: '919995727516',
-              api_key: '067908e3',
-              api_secret: '2c0080ec581afde4',
-            };
-            request(
-              {
-                url: 'http://rest.nexmo.com/sms/json',
-                body: messageBody,
-                json: true,
-                method: 'POST',
-                //proxy: 'http://594299:Success123++@proxy.cognizant.com:6050/'
-              },
-              (error, response, body) => {
-                console.log('enteredddddddddddddd');
-                console.log(error);
-                console.log(body);
-              }
-            );
+            // let messageBody = {
+            //   from: 'Nexmo',
+            //   test: 'welcome to nexmo',
+            //   to: '919995727516',
+            //   api_key: '067908e3',
+            //   api_secret: '2c0080ec581afde4',
+            // };
+            // request(
+            //   {
+            //     url: 'http://rest.nexmo.com/sms/json',
+            //     body: messageBody,
+            //     json: true,
+            //     method: 'POST',
+            //     proxy: 'http://594299:Success123++@proxy.cognizant.com:6050/'
+            //   },
+            //   (error, response, body) => {
+            //     console.log('enteredddddddddddddd');
+            //     console.log(error);
+            //     console.log(body);
+            //   }
+            // );
             console.log('nexmo2222222222222222');
 
             // const messenger = TextMessenger();
