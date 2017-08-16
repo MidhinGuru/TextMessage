@@ -291,14 +291,15 @@ router.post('/', (req, response) => {
               text,
               { type: 'unicode' },
               (err, responseData) => {
-                return response.status(201).json(err);
                 if (responseData) {
                   console.log('responseeeeeeeeeeeeeee');
                   console.log(responseData);
+                  return response.status(201).json(responseData);
                 }
                 if (err) {
                   console.log('errorrrrrrrrrrrrrrrr');
                   console.log(err);
+                  return response.status(404).json(err);
                 }
               }
             );
