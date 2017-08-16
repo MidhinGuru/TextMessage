@@ -321,10 +321,12 @@ router.post('/', (req, response) => {
                         (error, action) => {
                           if (error) {
                             return response.status(404).json(error);
+                          } else {
+                            return response.status(200).json({ s: 1 });
                           }
                         }
                       );
-                      return response.status(200).json({ s: 1 });
+                      // return response.status(200).json({ s: 1 });
                     }
                     if (err) {
                       console.log('errorrrrrrrrrrrrrrrr');
