@@ -313,7 +313,17 @@ router.post('/', (req, response) => {
                   { type: 'unicode' },
                   (err, responseData) => {
                     if (responseData) {
-                      console.log('responseeeeeeeeeeeeeee');
+                      const updatedAction = {};
+                      updatedAction.finishedDate = new Date();
+                      actionAPI.updateAction(
+                        updatedAction,
+                        actionID,
+                        (error, action) => {
+                          if (error) {
+                            return response.status(404).json(error);
+                          }
+                        }
+                      );
                       return response.status(200).json({ s: 1 });
                     }
                     if (err) {
