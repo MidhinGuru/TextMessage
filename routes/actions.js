@@ -291,6 +291,7 @@ router.post('/', (req, response) => {
               text,
               { type: 'unicode' },
               (err, responseData) => {
+                return response.status(201).json(err);
                 if (responseData) {
                   console.log('responseeeeeeeeeeeeeee');
                   console.log(responseData);
@@ -337,7 +338,7 @@ router.post('/', (req, response) => {
           }
         });
       }
-      return response.status(201).json(action);
+      //return response.status(201).json(action);
     }
   });
 });
