@@ -258,174 +258,130 @@ router.get('/:id', (req, response) => {
 */
 
 router.post('/', (req, response) => {
-  const newAction = req.body;
-  let dat = {};
-  dat.from = 'Nexmo';
-  dat.to = '919995727516';
-  dat.text = 'A text message sent using the Nexmo SMS API';
-  actionAPI.TextMessenger(dat, (error, message) => {
-    if (!error) {
-      console.log('222222222222222222');
-      return response.status(200).json({ message: 'Msg send successfully' });
+  var nexmo = new Nexmo(
+    {
+      apiKey: '067908e3',
+      apiSecret: '2c0080ec581afde4',
+    },
+    { debug: true }
+  );
+  //console.log(nexmo);
+  var from = 'Nexmo';
+  var to = '919995727516';
+  var text = 'A text message sent using the Nexmo SMS API';
+
+  nexmo.message.sendSms(
+    from,
+    to,
+    text,
+    { type: 'unicode' },
+    (err, responseData) => {
+      if (responseData) {
+        console.log('responseeeeeeeeeeeeeee');
+        return response.status(200).json({ s: 1 });
+      }
+      if (err) {
+        console.log('errorrrrrrrrrrrrrrrr');
+        console.log(err);
+        return response.status(404).json(err);
+      }
     }
-  });
+  );
+  // const newAction = req.body;
+  // actionAPI.addAction(newAction, (error, action) => {
+  //   if (error) {
+  //     return response.status(404).json({
+  //       success: false,
+  //       message: 'Action not saved',
+  //     });
+  //   } else {
+  //     if (action.action.actors.indexOf('text') > -1) {
+  //       let textMessage = action.action.actors.textMessage;
+  //       let expiresInMinutes = action.action.expiresInMinutes;
+  //       let actionID = action.action._id;
+  //       console.log('idddddddddddddddddddddddddddddd: ' + id);
+  //       actionAPI.getProfile(newAction.profileID, (error, profile) => {
+  //         if (!error) {
+  //           let phoneNumber = profile.phoneNumber;
+  //           console.log('phoneNumberrrrrrrrrrrrrrrrrrrr: ' + phoneNumber);
+
+  //           var nexmo = new Nexmo(
+  //             {
+  //               apiKey: '067908e3',
+  //               apiSecret: '2c0080ec581afde4',
+  //             },
+  //             { debug: true }
+  //           );
+  //           //console.log(nexmo);
+  //           var from = 'Nexmo';
+  //           var to = '919995727516';
+  //           var text = 'A text message sent using the Nexmo SMS API';
+
+  //           nexmo.message.sendSms(from, to, text,
+  //             { type: 'unicode' },
+  //             (err, responseData) => {
+  //               if (responseData) {
+  //                 console.log('responseeeeeeeeeeeeeee');
+  //                 // const updatedAction = {};
+  //                 // updatedAction.finishedDate = new Date();
+  //                 // actionAPI.updateAction(updatedAction, actionID, (error, action) => {
+  //                 //   if(error){
+
+  //                 //   }
+  //                 // });
+  //               }
+  //               if (err) {
+  //                 console.log('errorrrrrrrrrrrrrrrr');
+  //                 console.log(err);
+  //                 return response.status(404).json(err);
+  //               }
+  //             }
+  //           );
+
+  //           console.log('nexmo1111111111111111');
+  //           if (expiresInMinutes) {
+  //             setTimeout(function () {
+  //               console.log('Expiredddddddddddddddddddddddddddddd');
+  //             }, 60000);
+  //           }
+
+  //           // nexmo.message.sendSms(from, to, text, (error, response) => {
+  //           //   console.log('enteredddddddddddddd');
+  //           //   //console.log(response);
+  //           //   console.log(error);
+  //           // });
+  //           // let messageBody = {
+  //           //   from: 'Nexmo',
+  //           //   test: 'welcome to nexmo',
+  //           //   to: '919995727516',
+  //           //   api_key: '067908e3',
+  //           //   api_secret: '2c0080ec581afde4',
+  //           // };
+  //           // request(
+  //           //   {
+  //           //     url: 'http://rest.nexmo.com/sms/json',
+  //           //     body: messageBody,
+  //           //     json: true,
+  //           //     method: 'POST',
+  //           //     proxy: 'http://594299:Success123++@proxy.cognizant.com:6050/'
+  //           //   },
+  //           //   (error, response, body) => {
+  //           //     console.log('enteredddddddddddddd');
+  //           //     console.log(error);
+  //           //     console.log(body);
+  //           //   }
+  //           // );
+  //           console.log('nexmo2222222222222222');
+
+  //           // const messenger = TextMessenger();
+  //           // messenger.sendSMS(phoneNumber, message);
+  //         }
+  //       });
+  //     }
+  //     //return response.status(201).json(action);
+  //   }
+  // });
 });
-
-// actionAPI.addAction(newAction, (error, action) => {
-//   if (error) {
-//     return response.status(404).json({
-//       success: false,
-//       message: 'Action not saved',
-//     });
-//   } else {
-//     if (action.action.actors.indexOf('text') > -1) {
-//       let textMessage = action.action.actors.textMessage;
-//       let expiresInMinutes = action.action.expiresInMinutes;
-//       let actionID = action.action._id;
-//       actionAPI.getProfile(newAction.profileID, (error, profile) => {
-//         if (!error) {
-//           let phoneNumber = profile.phoneNumber;
-//           let dat={};
-//           dat.from = 'Nexmo';
-//           dat.to = '919995727516';
-//           dat.text = 'A text message sent using the Nexmo SMS API';
-//           sendMessage(dat,(error,response)=>{
-//              if (error) {
-//              }
-//              else{
-
-//              }
-
-//           });
-//         }
-//       });
-//     }
-//   }
-// });
-
-// const sendMessage = (dat, callback) => {
-// var nexmo = new Nexmo(
-//   {
-//     apiKey: '067908e3',
-//     apiSecret: '2c0080ec581afde4',
-//   },
-//   { debug: true }
-// );
-
-// nexmo.message.sendSms(
-//   dat.from,
-//   dat.to,
-//   dat.text,
-//   { type: 'unicode' },
-//   (err, responseData) => {
-//     if (responseData) {
-//       console.log('responseeeeeeeeeeeeeee');
-//       return response.status(200).json({ s: 1 });
-//     }
-//     if (err) {
-//       console.log('errorrrrrrrrrrrrrrrr');
-//       console.log(err);
-//       return response.status(404).json(err);
-//     }
-//   }
-// );
-//};
-
-// const newAction = req.body;
-// actionAPI.addAction(newAction, (error, action) => {
-//   if (error) {
-//     return response.status(404).json({
-//       success: false,
-//       message: 'Action not saved',
-//     });
-//   } else {
-//     if (action.action.actors.indexOf('text') > -1) {
-//       let textMessage = action.action.actors.textMessage;
-//       let expiresInMinutes = action.action.expiresInMinutes;
-//       let actionID = action.action._id;
-//       console.log('idddddddddddddddddddddddddddddd: ' + id);
-//       actionAPI.getProfile(newAction.profileID, (error, profile) => {
-//         if (!error) {
-//           let phoneNumber = profile.phoneNumber;
-//           console.log('phoneNumberrrrrrrrrrrrrrrrrrrr: ' + phoneNumber);
-
-//           var nexmo = new Nexmo(
-//             {
-//               apiKey: '067908e3',
-//               apiSecret: '2c0080ec581afde4',
-//             },
-//             { debug: true }
-//           );
-//           //console.log(nexmo);
-//           var from = 'Nexmo';
-//           var to = '919995727516';
-//           var text = 'A text message sent using the Nexmo SMS API';
-
-//           nexmo.message.sendSms(from, to, text,
-//             { type: 'unicode' },
-//             (err, responseData) => {
-//               if (responseData) {
-//                 console.log('responseeeeeeeeeeeeeee');
-//                 // const updatedAction = {};
-//                 // updatedAction.finishedDate = new Date();
-//                 // actionAPI.updateAction(updatedAction, actionID, (error, action) => {
-//                 //   if(error){
-
-//                 //   }
-//                 // });
-//               }
-//               if (err) {
-//                 console.log('errorrrrrrrrrrrrrrrr');
-//                 console.log(err);
-//                 return response.status(404).json(err);
-//               }
-//             }
-//           );
-
-//           console.log('nexmo1111111111111111');
-//           if (expiresInMinutes) {
-//             setTimeout(function () {
-//               console.log('Expiredddddddddddddddddddddddddddddd');
-//             }, 60000);
-//           }
-
-//           // nexmo.message.sendSms(from, to, text, (error, response) => {
-//           //   console.log('enteredddddddddddddd');
-//           //   //console.log(response);
-//           //   console.log(error);
-//           // });
-//           // let messageBody = {
-//           //   from: 'Nexmo',
-//           //   test: 'welcome to nexmo',
-//           //   to: '919995727516',
-//           //   api_key: '067908e3',
-//           //   api_secret: '2c0080ec581afde4',
-//           // };
-//           // request(
-//           //   {
-//           //     url: 'http://rest.nexmo.com/sms/json',
-//           //     body: messageBody,
-//           //     json: true,
-//           //     method: 'POST',
-//           //     proxy: 'http://594299:Success123++@proxy.cognizant.com:6050/'
-//           //   },
-//           //   (error, response, body) => {
-//           //     console.log('enteredddddddddddddd');
-//           //     console.log(error);
-//           //     console.log(body);
-//           //   }
-//           // );
-//           console.log('nexmo2222222222222222');
-
-//           // const messenger = TextMessenger();
-//           // messenger.sendSMS(phoneNumber, message);
-//         }
-//       });
-//     }
-//     //return response.status(201).json(action);
-//   }
-// });
-//});
 
 /**
 * @api {put} /api/v1/actions/{id} Update Assigned action
