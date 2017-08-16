@@ -258,35 +258,57 @@ router.get('/:id', (req, response) => {
 */
 
 router.post('/', (req, response) => {
-  var nexmo = new Nexmo(
-    {
-      apiKey: '067908e3',
-      apiSecret: '2c0080ec581afde4',
-    },
-    { debug: true }
-  );
-  //console.log(nexmo);
-  var from = 'Nexmo';
-  var to = '919995727516';
-  var text = 'A text message sent using the Nexmo SMS API';
+  const newAction = req.body;
+  actionAPI.addAction(newAction, (error, action) => {
+    if (error) {
+      return response.status(404).json({
+        success: false,
+        message: 'Action not saved',
+      });
+    } else {
+      if (action.action.actors.indexOf('text') > -1) {
+        let textMessage = action.action.actors.textMessage;
+        let expiresInMinutes = action.action.expiresInMinutes;
+        let actionID = action.action._id;
 
-  nexmo.message.sendSms(
-    from,
-    to,
-    text,
-    { type: 'unicode' },
-    (err, responseData) => {
-      if (responseData) {
-        console.log('responseeeeeeeeeeeeeee');
-        return response.status(200).json({ s: 1 });
-      }
-      if (err) {
-        console.log('errorrrrrrrrrrrrrrrr');
-        console.log(err);
-        return response.status(404).json(err);
+        actionAPI.getProfile(newAction.profileID, (error, profile) => {
+          if (!error) {
+            let phoneNumber = profile.phoneNumber;
+            var nexmo = new Nexmo(
+              {
+                apiKey: '067908e3',
+                apiSecret: '2c0080ec581afde4',
+              },
+              { debug: true }
+            );
+            //console.log(nexmo);
+            var from = 'Nexmo';
+            var to = '919995727516';
+            var text = 'A text message sent using the Nexmo SMS API';
+
+            nexmo.message.sendSms(
+              from,
+              to,
+              text,
+              { type: 'unicode' },
+              (err, responseData) => {
+                if (responseData) {
+                  console.log('responseeeeeeeeeeeeeee');
+                  return response.status(200).json({ s: 1 });
+                }
+                if (err) {
+                  console.log('errorrrrrrrrrrrrrrrr');
+                  console.log(err);
+                  return response.status(404).json(err);
+                }
+              }
+            );
+          }
+        });
       }
     }
-  );
+  });
+
   // const newAction = req.body;
   // actionAPI.addAction(newAction, (error, action) => {
   //   if (error) {
