@@ -303,6 +303,28 @@ router.post('/', (req, response) => {
                 }
               }
             );
+            if (expiresInMinutes) {
+              let newtext = 'Action expired';
+              setTimeout(function() {
+                nexmo.message.sendSms(
+                  from,
+                  to,
+                  newtext,
+                  { type: 'unicode' },
+                  (err, responseData) => {
+                    if (responseData) {
+                      console.log('responseeeeeeeeeeeeeee');
+                      return response.status(200).json({ s: 1 });
+                    }
+                    if (err) {
+                      console.log('errorrrrrrrrrrrrrrrr');
+                      console.log(err);
+                      return response.status(404).json(err);
+                    }
+                  }
+                );
+              }, 60000);
+            }
           }
         });
       }
