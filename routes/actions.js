@@ -303,7 +303,7 @@ router.post('/', (req, response) => {
                 }
               }
             );
-            if (expiresInMinutes) {
+            if (expiresInMinutes && textMessage) {
               let newtext = 'Action expired';
               setTimeout(function() {
                 nexmo.message.sendSms(
@@ -314,7 +314,7 @@ router.post('/', (req, response) => {
                   (err, responseData) => {
                     if (responseData) {
                       const updatedAction = {};
-                      updatedAction.finishedDate = new Date();
+                      updatedAction.finishedDate = '2019-08-10T22:41:52.510Z';
                       actionAPI.updateAction(
                         updatedAction,
                         actionID,
