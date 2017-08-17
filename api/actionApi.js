@@ -43,6 +43,8 @@ const addAction = (newAction, callback) => {
 };
 
 const updateAction = (updatedAction, id, callback) => {
+  console.log('updatedActionnnnnnnnnnnnnnnnnnnnnn');
+  console.log(updatedAction);
   return AssignedAction.findOne({ _id: id }, (error, assignedAction) => {
     if (updatedAction.action) {
       let modifiedAction = updatedAction.action;
@@ -55,6 +57,8 @@ const updateAction = (updatedAction, id, callback) => {
       delete updatedAction.action;
     }
     Object.assign(assignedAction, updatedAction);
+    console.log('AssignedActionnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn');
+    console.log(AssignedAction);
     AssignedAction.findOneAndUpdate(
       { _id: id },
       assignedAction,
