@@ -272,7 +272,7 @@ router.post('/', (req, response) => {
       let textMessage = action.action.textMessage;
       let expiresInMinutes = action.action.expiresInMinutes;
       let actionID = action.action._id;
-      var updatedFinishedDate = action.finishedDate;
+      let updatedFinishedDate = action.finishedDate;
 
       //if (action.action.actors.indexOf('text') > -1) {
       actionAPI.getProfile(newAction.profileID, (error, profile) => {
@@ -280,9 +280,10 @@ router.post('/', (req, response) => {
           let phoneNumber = profile.phoneNumber;
           let validate = smsUtil.validatePhoneNumber(phoneNumber);
           if (validate) {
-            var from = 'Nexmo';
-            var to = phoneNumber;
-            var text = textMessage;
+            let from = 'Nexmo';
+            let to = phoneNumber;
+            let text = textMessage;
+            let actionName = action.action.name;
 
             if (action.action.actors.indexOf('text') > -1 && textMessage) {
               smsUtil.sendSms(from, to, text);
@@ -290,7 +291,7 @@ router.post('/', (req, response) => {
               if (!updatedFinishedDate && updatedFinishedDate == null) {
                 if (expiresInMinutes && textMessage) {
                   //Expiration check
-                  let newTextMessage = 'Action expired';
+                  let newTextMessage = 'Action(' + actionName + ') expired';
                   setTimeout(function() {
                     smsUtil.sendSms(from, to, newTextMessage);
                   }, 60000);
