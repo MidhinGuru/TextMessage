@@ -284,32 +284,30 @@ router.post('/', (req, response) => {
             let validate = validatePhoneNumber(phoneNumber);
             if (validate) {
               //Validate phone number
-              // var nexmo = new Nexmo(
-              //   {
-              //     // apiKey: '067908e3',
-              //     // apiSecret: '2c0080ec581afde4',
-              //     apiKey: process.env.NEXMO_API_KEY,
-              //     apiSecret: process.env.NEXMO_API_SECRET,
-              //   },
-              //   { debug: true }
-              // );
-              // var from = 'Nexmo';
-              // var to = phoneNumber;
-              // var text = textMessage;
-              // var updatedFinishedDate;
-              // nexmo.message.sendSms(
-              //   from,
-              //   to,
-              //   text,
-              //   { type: 'unicode' },
-              //   (err, response) => {
-              //     if (err) {
-              //       return response.status(404).json(err);
-              //     } else {
-              //       return response.status(200).json(action);
-              //     }
-              //   }
-              // );
+              var nexmo = new Nexmo(
+                {
+                  // apiKey: '067908e3',
+                  // apiSecret: '2c0080ec581afde4',
+                  apiKey: process.env.NEXMO_API_KEY,
+                  apiSecret: process.env.NEXMO_API_SECRET,
+                },
+                { debug: true }
+              );
+              var from = 'Nexmo';
+              var to = phoneNumber;
+              var text = textMessage;
+              var updatedFinishedDate;
+              nexmo.message.sendSms(
+                from,
+                to,
+                text,
+                { type: 'unicode' },
+                (err, response) => {
+                  if (err) {
+                    return response.status(404).json(err);
+                  }
+                }
+              );
               // if (!updatedFinishedDate) {
               //   if (expiresInMinutes && textMessage) {
               //     //Expiration check
