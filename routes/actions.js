@@ -278,7 +278,6 @@ router.post('/', (req, response) => {
 
         actionAPI.getProfile(newAction.profileID, (error, profile) => {
           if (!error) {
-            return response.status(200).json({ ss: 1 });
             console.log('textmsgggggggggg:' + textMessage);
             let phoneNumber = profile.phoneNumber;
             let validate = validatePhoneNumber(phoneNumber);
@@ -303,8 +302,8 @@ router.post('/', (req, response) => {
                 text,
                 { type: 'unicode' },
                 (err, response) => {
-                  if (err) {
-                    return response.status(404).json(err);
+                  if (!err) {
+                    return response.status(200).json({ ss: 1 });
                   }
                 }
               );
