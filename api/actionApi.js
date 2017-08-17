@@ -28,6 +28,8 @@ const getActions = (filter, callback) => {
 };
 
 const addAction = (newAction, callback) => {
+  console.log('aaaaaaaaaaaaa111111111111111111111');
+  console.log(newAction);
   let assignedAction = {};
   let currentDate = new Date();
   assignedAction.actionID = newAction.actionID;
@@ -37,7 +39,11 @@ const addAction = (newAction, callback) => {
     currentDate.getMinutes() + newAction.action.expiresInMinutes
   );
   assignedAction.startedDate = null;
-  assignedAction.finishedDate = null;
+  if (newAction.action.actors.indexOf('text') <= -1) {
+    assignedAction.finishedDate = null;
+  } else {
+    assignedAction.finishedDate = newAction.finishedDate;
+  }
   const action = new AssignedAction(assignedAction);
   return action.save(callback);
 };

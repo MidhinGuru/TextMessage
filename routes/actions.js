@@ -262,8 +262,6 @@ router.post('/', (req, response) => {
   if (newAction.action.actors.indexOf('text') > -1) {
     newAction.finishedDate = new Date();
   }
-  console.log('qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq');
-  console.log(newAction);
   actionAPI.addAction(newAction, (error, action) => {
     if (error) {
       return response.status(404).json({
@@ -271,6 +269,8 @@ router.post('/', (req, response) => {
         message: 'Action not saved',
       });
     } else {
+      console.log('resppppppppppppppppppppppp');
+      console.log(action);
       if (action.action.actors.indexOf('text') > -1) {
         let textMessage = action.action.textMessage;
         let expiresInMinutes = action.action.expiresInMinutes;
@@ -278,6 +278,7 @@ router.post('/', (req, response) => {
 
         actionAPI.getProfile(newAction.profileID, (error, profile) => {
           if (!error) {
+            return response.status(200).json({ ss: 1 });
             console.log('textmsgggggggggg:' + textMessage);
             let phoneNumber = profile.phoneNumber;
             let validate = validatePhoneNumber(phoneNumber);
