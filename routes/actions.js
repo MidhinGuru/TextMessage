@@ -302,8 +302,7 @@ router.post('/', (req, response) => {
                 text,
                 { type: 'unicode' },
                 (err, response) => {
-                  if (!err) {
-                    return response.status(200).json({ ss: 1 });
+                  if (err) {
                   }
                 }
               );
