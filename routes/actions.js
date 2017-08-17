@@ -288,7 +288,7 @@ router.post('/', (req, response) => {
               var from = 'Nexmo';
               // var to = '919995727516';
               var to = phoneNumber;
-              var text = 'A text message sent using the Nexmo SMS API';
+              var text = textMessage;
               nexmo.message.sendSms(
                 from,
                 to,
@@ -346,18 +346,9 @@ router.post('/', (req, response) => {
   });
 
   function validatePhoneNumber(phoneNumber) {
-    console.log('phone enteredddddddddddddddddddd');
-    //var expression = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
-    //var expression = /^\(?([0-9]{2})\)?[-. ]?([0-9]{3})?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
-    //var expression = "^(?:\(\d{3}\)|\d{3})[- ]?\d{3}[- ]?\d{4}$";
-    ///var expression = new RegExp(/^\+?1?\s*?\(?\d{3}(?:\)|[-|\s])?\s*?\d{3}[-|\s]?\d{4}$/);
-
-    // var expression = /^(\+\d{1,2}\s)?\(?\d{3}\)?[\s.-]\d{3}[\s.-]\d{4}$/;
     var expression = /^(\+\d{1,2}\s)?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$/;
-
     console.log('Phonenumber : ' + phoneNumber);
     if (phoneNumber.match(expression)) {
-      //if  (expression.test(phoneNumber)) {
       console.log('phone number validdddddddddddddddddddddddddddddddddd');
       return true;
     } else {
