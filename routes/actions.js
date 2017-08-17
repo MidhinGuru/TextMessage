@@ -299,20 +299,20 @@ router.post('/', (req, response) => {
                 (err, responseData) => {
                   if (responseData) {
                     //Update FinishedDate
-                    const updatedAction = {};
-                    updatedAction.finishedDate = new Date();
-                    actionAPI.updateAction(
-                      updatedAction,
-                      actionID,
-                      (error, action) => {
-                        if (error) {
-                          return response.status(404).json(error);
-                        } else {
-                          updatedFinishedDate = action.finishedDate;
-                          return response.status(200).json({ s: 1 });
-                        }
-                      }
-                    );
+                    // const updatedAction = {};
+                    // updatedAction.finishedDate = new Date();
+                    // actionAPI.updateAction(
+                    //   updatedAction,
+                    //   actionID,
+                    //   (error, action) => {
+                    //     if (error) {
+                    //       return response.status(404).json(error);
+                    //     } else {
+                    //       updatedFinishedDate = action.finishedDate;
+                    //       return response.status(200).json({ s: 1 });
+                    //     }
+                    //   }
+                    // );
                     //return response.status(200).json({ s: 1 });
                   }
                   if (err) {
