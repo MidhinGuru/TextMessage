@@ -288,7 +288,7 @@ router.post('/', (req, response) => {
               var from = 'Nexmo';
               // var to = '919995727516';
               var to = phoneNumber;
-              var text = textMessage;
+              var text = 'A text message sent using the Nexmo SMS API';
               nexmo.message.sendSms(
                 from,
                 to,
