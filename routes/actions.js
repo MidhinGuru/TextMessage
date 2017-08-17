@@ -262,6 +262,8 @@ router.post('/', (req, response) => {
   if (newAction.action.actors.indexOf('text') > -1) {
     newAction.finishedDate = new Date();
   }
+  console.log('qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq');
+  console.log(newAction);
   actionAPI.addAction(newAction, (error, action) => {
     if (error) {
       return response.status(404).json({
@@ -302,6 +304,8 @@ router.post('/', (req, response) => {
                 (err, response) => {
                   if (err) {
                     return response.status(404).json(err);
+                  } else {
+                    return response.status(200).json(action);
                   }
                 }
               );
