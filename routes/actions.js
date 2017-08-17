@@ -280,14 +280,6 @@ router.post('/', (req, response) => {
             let phoneNumber = profile.phoneNumber;
             let validate = validatePhoneNumber(phoneNumber);
             if (validate) {
-              //Validate phone number
-              var nexmo = new Nexmo(
-                {
-                  apiKey: process.env.NEXMO_API_KEY,
-                  apiSecret: process.env.NEXMO_API_SECRET,
-                },
-                { debug: true }
-              );
               var from = 'Nexmo';
               var to = phoneNumber;
               var text = textMessage;
