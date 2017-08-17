@@ -1,8 +1,8 @@
 import express, { Router } from 'express';
 import actionAPI from '../api/actionApi';
 import MongoQS from 'mongo-querystring';
-import Nexmo from 'nexmo';
-//import nex from './nex';
+//import Nexmo from 'nexmo';
+import smsUtil from '../util/smsUtil';
 import request from 'request';
 
 const router = Router();
@@ -273,6 +273,7 @@ router.post('/', (req, response) => {
         let textMessage = action.action.textMessage;
         let expiresInMinutes = action.action.expiresInMinutes;
         let actionID = action.action._id;
+        var updatedFinishedDate = action.finishedDate;
 
         actionAPI.getProfile(newAction.profileID, (error, profile) => {
           if (!error) {
@@ -290,7 +291,6 @@ router.post('/', (req, response) => {
               var from = 'Nexmo';
               var to = phoneNumber;
               var text = textMessage;
-              var updatedFinishedDate;
 
               //nexmo.message.sendSms(from, to, text);
               smsUtil.sendSms(from, to, text);
