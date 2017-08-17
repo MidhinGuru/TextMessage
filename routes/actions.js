@@ -297,7 +297,7 @@ router.post('/', (req, response) => {
                 text,
                 { type: 'unicode' },
                 (err, response) => {
-                  if (response) {
+                  if (!err) {
                     //Update FinishedDate
                     let updatedAction = {};
                     updatedAction.finishedDate = new Date();
