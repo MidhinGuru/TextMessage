@@ -267,13 +267,14 @@ router.post('/', (req, response) => {
       });
     } else {
       if (action.action.actors.indexOf('text') > -1) {
-        let textMessage = action.action.actors.textMessage;
+        let textMessage = action.action.textMessage;
         let expiresInMinutes = action.action.expiresInMinutes;
         let actionID = action.action._id;
 
         actionAPI.getProfile(newAction.profileID, (error, profile) => {
           if (!error) {
-            console.log('profileeeeeeeeeeeeeeeeeeeeeeeee: ' + textMessage);
+            console.log('profileeeeeeeeeeeeeeeeeeeeeeeee:');
+            console.log('textmsgggggggggg:' + textMessage);
             let phoneNumber = profile.phoneNumber;
             let validate = validatePhoneNumber(phoneNumber);
             if (validate) {
