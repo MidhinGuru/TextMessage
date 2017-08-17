@@ -274,33 +274,32 @@ router.post('/', (req, response) => {
       let actionID = action.action._id;
       var updatedFinishedDate = action.finishedDate;
 
-      if (action.action.actors.indexOf('text') > -1) {
-        console.log('ifffffffffffffffffff');
-        actionAPI.getProfile(newAction.profileID, (error, profile) => {
-          if (!error) {
-            let phoneNumber = profile.phoneNumber;
-            let validate = smsUtil.validatePhoneNumber(phoneNumber);
-            if (validate) {
-              var from = 'Nexmo';
-              var to = phoneNumber;
-              var text = textMessage;
+      //if (action.action.actors.indexOf('text') > -1) {
+      actionAPI.getProfile(newAction.profileID, (error, profile) => {
+        if (!error) {
+          let phoneNumber = profile.phoneNumber;
+          let validate = smsUtil.validatePhoneNumber(phoneNumber);
+          if (validate) {
+            var from = 'Nexmo';
+            var to = phoneNumber;
+            var text = textMessage;
 
-              //nexmo.message.sendSms(from, to, text);
+            if (action.action.actors.indexOf('text') > -1 && textMessage) {
               smsUtil.sendSms(from, to, text);
+            } else {
+              if (!updatedFinishedDate && updatedFinishedDate == null) {
+                if (expiresInMinutes && textMessage) {
+                  //Expiration check
+                  let newTextMessage = 'Action expired';
+                  setTimeout(function() {
+                    smsUtil.sendSms(from, to, newTextMessage);
+                  }, 60000);
+                }
+              }
             }
           }
-        });
-      } else {
-        if (!updatedFinishedDate && updatedFinishedDate == null) {
-          if (expiresInMinutes && textMessage) {
-            //Expiration check
-            let newTextMessage = 'Action expired';
-            setTimeout(function() {
-              smsUtil.sendSms(from, to, newTextMessage);
-            }, 60000);
-          }
         }
-      }
+      });
       return response.status(201).json(action);
     }
   });
