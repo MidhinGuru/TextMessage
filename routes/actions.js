@@ -273,7 +273,6 @@ router.post('/', (req, response) => {
 
         actionAPI.getProfile(newAction.profileID, (error, profile) => {
           if (!error) {
-            console.log('profileeeeeeeeeeeeeeeeeeeeeeeee:');
             console.log('textmsgggggggggg:' + textMessage);
             let phoneNumber = profile.phoneNumber;
             let validate = validatePhoneNumber(phoneNumber);
@@ -281,13 +280,14 @@ router.post('/', (req, response) => {
               //Validate phone number
               var nexmo = new Nexmo(
                 {
-                  apiKey: '067908e3',
-                  apiSecret: '2c0080ec581afde4',
+                  // apiKey: '067908e3',
+                  // apiSecret: '2c0080ec581afde4',
+                  apiKey: NEXMO_API_KEY,
+                  apiSecret: NEXMO_API_SECRET,
                 },
                 { debug: true }
               );
               var from = 'Nexmo';
-              // var to = '919995727516';
               var to = phoneNumber;
               var text = textMessage;
               nexmo.message.sendSms(
