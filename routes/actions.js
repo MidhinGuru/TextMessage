@@ -296,23 +296,23 @@ router.post('/', (req, response) => {
                 to,
                 text,
                 { type: 'unicode' },
-                (err, responseData) => {
-                  if (responseData) {
+                (err, response) => {
+                  if (response) {
                     //Update FinishedDate
-                    // const updatedAction = {};
-                    // updatedAction.finishedDate = new Date();
-                    // actionAPI.updateAction(
-                    //   updatedAction,
-                    //   actionID,
-                    //   (error, action) => {
-                    //     if (error) {
-                    //       return response.status(404).json(error);
-                    //     } else {
-                    //       updatedFinishedDate = action.finishedDate;
-                    //       return response.status(200).json({ s: 1 });
-                    //     }
-                    //   }
-                    // );
+                    let updatedAction = {};
+                    updatedAction.finishedDate = new Date();
+                    actionAPI.updateAction(
+                      updatedAction,
+                      actionID,
+                      (error, action) => {
+                        if (error) {
+                          return response.status(404).json(error);
+                        } else {
+                          //updatedFinishedDate = action.finishedDate;
+                          return response.status(200).json({ s: 1 });
+                        }
+                      }
+                    );
                     //return response.status(200).json({ s: 1 });
                   }
                   if (err) {
