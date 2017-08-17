@@ -273,7 +273,7 @@ router.post('/', (req, response) => {
 
         actionAPI.getProfile(newAction.profileID, (error, profile) => {
           if (!error) {
-            console.log('profileeeeeeeeeeeeeeeeeeeeeeeee');
+            console.log('profileeeeeeeeeeeeeeeeeeeeeeeee: ' + textMessage);
             let phoneNumber = profile.phoneNumber;
             let validate = validatePhoneNumber(phoneNumber);
             if (validate) {
@@ -288,7 +288,7 @@ router.post('/', (req, response) => {
               var from = 'Nexmo';
               // var to = '919995727516';
               var to = phoneNumber;
-              var text = 'A text message sent using the Nexmo SMS API';
+              var text = '' + textMessage;
               nexmo.message.sendSms(
                 from,
                 to,
