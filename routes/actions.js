@@ -286,20 +286,20 @@ router.post('/', (req, response) => {
 
               //nexmo.message.sendSms(from, to, text);
               smsUtil.sendSms(from, to, text);
-
-              if (!updatedFinishedDate) {
-                if (expiresInMinutes && textMessage) {
-                  //Expiration check
-                  let newTextMessage = 'Action expired';
-                  setTimeout(function() {
-                    //nexmo.message.sendSms(from, to, newTextMessage);
-                    smsUtil.sendSms(from, to, newTextMessage);
-                  }, 60000);
-                }
-              }
             }
           }
         });
+      } else {
+        if (!updatedFinishedDate && updatedFinishedDate == null) {
+          if (expiresInMinutes && textMessage) {
+            //Expiration check
+            let newTextMessage = 'Action expired';
+            setTimeout(function() {
+              //nexmo.message.sendSms(from, to, newTextMessage);
+              smsUtil.sendSms(from, to, newTextMessage);
+            }, 60000);
+          }
+        }
       }
       return response.status(201).json(action);
     }
