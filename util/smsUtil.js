@@ -17,6 +17,16 @@ const sendSms = (from, to, textMessage) => {
   });
 };
 
+const validatePhoneNumber = phoneNumber => {
+  var expression = /^(\+\d{1,2}\s)?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$/;
+  if (phoneNumber.match(expression)) {
+    return true;
+  } else {
+    return false;
+  }
+};
+
 module.exports = {
   sendSms: sendSms,
+  validatePhoneNumber: validatePhoneNumber,
 };

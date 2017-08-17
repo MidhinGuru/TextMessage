@@ -8,8 +8,6 @@ const getAction = (id, callback) => {
 };
 
 const getProfile = (id, callback) => {
-  console.log('33333333333333');
-  console.log(process.env.PROFILE_API_URL + id);
   request(
     {
       url: process.env.PROFILE_API_URL + id,
@@ -17,7 +15,6 @@ const getProfile = (id, callback) => {
       method: 'GET',
     },
     (error, response, body) => {
-      console.log('4444444444444444444');
       callback(error, body);
     }
   );
@@ -28,8 +25,6 @@ const getActions = (filter, callback) => {
 };
 
 const addAction = (newAction, callback) => {
-  console.log('aaaaaaaaaaaaa111111111111111111111');
-  console.log(newAction);
   let assignedAction = {};
   let currentDate = new Date();
   assignedAction.actionID = newAction.actionID;
@@ -49,8 +44,6 @@ const addAction = (newAction, callback) => {
 };
 
 const updateAction = (updatedAction, id, callback) => {
-  console.log('updatedActionnnnnnnnnnnnnnnnnnnnnn');
-  console.log(updatedAction);
   return AssignedAction.findOne({ _id: id }, (error, assignedAction) => {
     if (updatedAction.action) {
       let modifiedAction = updatedAction.action;
@@ -63,8 +56,6 @@ const updateAction = (updatedAction, id, callback) => {
       delete updatedAction.action;
     }
     Object.assign(assignedAction, updatedAction);
-    console.log('AssignedActionnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn');
-    console.log(AssignedAction);
     AssignedAction.findOneAndUpdate(
       { _id: id },
       assignedAction,
@@ -79,7 +70,6 @@ const deleteAction = (id, callback) => {
 };
 
 const TextMessenger = (filter, callback) => {
-  console.log('11111111111111111');
   var nexmo = new Nexmo(
     {
       apiKey: '067908e3',

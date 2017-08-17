@@ -278,7 +278,7 @@ router.post('/', (req, response) => {
         actionAPI.getProfile(newAction.profileID, (error, profile) => {
           if (!error) {
             let phoneNumber = profile.phoneNumber;
-            let validate = validatePhoneNumber(phoneNumber);
+            let validate = smsUtil.validatePhoneNumber(phoneNumber);
             if (validate) {
               var from = 'Nexmo';
               var to = phoneNumber;
@@ -305,20 +305,6 @@ router.post('/', (req, response) => {
     }
   });
 });
-
-function validatePhoneNumber(phoneNumber) {
-  var expression = /^(\+\d{1,2}\s)?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$/;
-  console.log('Phonenumber : ' + phoneNumber);
-  if (phoneNumber.match(expression)) {
-    console.log('phone number validdddddddddddddddddddddddddddddddddd');
-    return true;
-  } else {
-    console.log(
-      'phone number INNNNNNNNNNNvaliddddddddddddddddddddddddddddddddddd'
-    );
-    return false;
-  }
-}
 
 /**
 * @api {put} /api/v1/actions/{id} Update Assigned action
