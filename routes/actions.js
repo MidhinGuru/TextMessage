@@ -269,8 +269,6 @@ router.post('/', (req, response) => {
         message: 'Action not saved',
       });
     } else {
-      console.log('resppppppppppppppppppppppp');
-      console.log(action);
       if (action.action.actors.indexOf('text') > -1) {
         let textMessage = action.action.textMessage;
         let expiresInMinutes = action.action.expiresInMinutes;
@@ -278,15 +276,12 @@ router.post('/', (req, response) => {
 
         actionAPI.getProfile(newAction.profileID, (error, profile) => {
           if (!error) {
-            console.log('textmsgggggggggg:' + textMessage);
             let phoneNumber = profile.phoneNumber;
             let validate = validatePhoneNumber(phoneNumber);
             if (validate) {
               //Validate phone number
               var nexmo = new Nexmo(
                 {
-                  // apiKey: '067908e3',
-                  // apiSecret: '2c0080ec581afde4',
                   apiKey: process.env.NEXMO_API_KEY,
                   apiSecret: process.env.NEXMO_API_SECRET,
                 },
@@ -297,20 +292,20 @@ router.post('/', (req, response) => {
               var text = textMessage;
               var updatedFinishedDate;
 
-              nexmo.message.sendSms(from, to, text);
+              //nexmo.message.sendSms(from, to, text);
+              smsUtil.sendSms(from, to, text);
+
               if (!updatedFinishedDate) {
                 if (expiresInMinutes && textMessage) {
                   //Expiration check
                   let newTextMessage = 'Action expired';
                   setTimeout(function() {
-                    nexmo.message.sendSms(from, to, newTextMessage);
+                    //nexmo.message.sendSms(from, to, newTextMessage);
+                    smsUtil.sendSms(from, to, newTextMessage);
                   }, 60000);
                 }
               }
             }
-          }
-          if (error) {
-            console.log('profile errorrrrrrrrrrrrrrrrrr');
           }
         });
       }
