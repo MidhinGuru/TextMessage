@@ -296,40 +296,17 @@ router.post('/', (req, response) => {
               var to = phoneNumber;
               var text = textMessage;
               var updatedFinishedDate;
-              // nexmo.message.sendSms(
-              //   from,
-              //   to,
-              //   text,
-              //   { type: 'unicode' },
-              //   (err, res) => {
-              //     if (!err) {
-              //       return response.status(200).json({ ss: 1 });
-              //     }
-              //   }
-              // );
+
               nexmo.message.sendSms(from, to, text);
-              // if (!updatedFinishedDate) {
-              //   if (expiresInMinutes && textMessage) {
-              //     //Expiration check
-              //     let newTextMessage = 'Action expired';
-              //     setTimeout(function() {
-              //       nexmo.message.sendSms(
-              //         from,
-              //         to,
-              //         newTextMessage,
-              //         { type: 'unicode' },
-              //         (err, response) => {
-              //           if (response) {
-              //             return response.status(200).json({ ss: 1 });
-              //           }
-              //           if (err) {
-              //             return response.status(404).json(err);
-              //           }
-              //         }
-              //       );
-              //     }, 60000);
-              //   }
-              // }
+              if (!updatedFinishedDate) {
+                if (expiresInMinutes && textMessage) {
+                  //Expiration check
+                  let newTextMessage = 'Action expired';
+                  setTimeout(function() {
+                    nexmo.message.sendSms(from, to, newTextMessage);
+                  }, 60000);
+                }
+              }
             }
           }
           if (error) {
