@@ -295,7 +295,6 @@ router.post('/', (req, response) => {
           if (expiresInMinutes && textMessage) {
             //Expiration check
             let newTextMessage = 'Action expired';
-
             setTimeout(function() {
               smsUtil.sendSms(from, to, newTextMessage);
             }, 60000);
