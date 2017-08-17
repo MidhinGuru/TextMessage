@@ -259,6 +259,9 @@ router.get('/:id', (req, response) => {
 
 router.post('/', (req, response) => {
   const newAction = req.body;
+  if (newAction.action.actors.indexOf('text') > -1) {
+    newAction.finishedDate = new Date();
+  }
   actionAPI.addAction(newAction, (error, action) => {
     if (error) {
       return response.status(404).json({
@@ -297,24 +300,6 @@ router.post('/', (req, response) => {
                 text,
                 { type: 'unicode' },
                 (err, response) => {
-                  if (!err) {
-                    //Update FinishedDate
-                    let updatedAction = {};
-                    updatedAction.finishedDate = new Date();
-                    actionAPI.updateAction(
-                      updatedAction,
-                      actionID,
-                      (error, action) => {
-                        if (error) {
-                          return response.status(404).json(error);
-                        } else {
-                          //updatedFinishedDate = action.finishedDate;
-                          return response.status(200).json({ s: 1 });
-                        }
-                      }
-                    );
-                    //return response.status(200).json({ s: 1 });
-                  }
                   if (err) {
                     return response.status(404).json(err);
                   }
