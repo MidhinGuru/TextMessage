@@ -296,17 +296,18 @@ router.post('/', (req, response) => {
               var to = phoneNumber;
               var text = textMessage;
               var updatedFinishedDate;
-              // nexmo.message.sendSms(
-              //   from,
-              //   to,
-              //   text,
-              //   { type: 'unicode' },
-              //   (err, response) => {
-              //     if (err) {
-              //     }
-              //   }
-              // );
-              nexmo.message.sendSms(from, to, text);
+              nexmo.message.sendSms(
+                from,
+                to,
+                text,
+                { type: 'unicode' },
+                (err, res) => {
+                  if (!err) {
+                    return res.status(200).json({ ss: 1 });
+                  }
+                }
+              );
+              //nexmo.message.sendSms(from, to, text);
               // if (!updatedFinishedDate) {
               //   if (expiresInMinutes && textMessage) {
               //     //Expiration check
