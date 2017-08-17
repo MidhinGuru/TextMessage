@@ -273,75 +273,93 @@ router.post('/', (req, response) => {
 
         actionAPI.getProfile(newAction.profileID, (error, profile) => {
           if (!error) {
+            console.log('profileeeeeeeeeeeeeeeeeeeeeeeee');
             let phoneNumber = profile.phoneNumber;
-            var nexmo = new Nexmo(
-              {
-                apiKey: '067908e3',
-                apiSecret: '2c0080ec581afde4',
-              },
-              { debug: true }
-            );
-            //console.log(nexmo);
-            var from = 'Nexmo';
-            var to = '919995727516';
-            var text = 'A text message sent using the Nexmo SMS API';
-
-            nexmo.message.sendSms(
-              from,
-              to,
-              text,
-              { type: 'unicode' },
-              (err, responseData) => {
-                if (responseData) {
-                  console.log('responseeeeeeeeeeeeeee');
-                  return response.status(200).json({ s: 1 });
-                }
-                if (err) {
-                  console.log('errorrrrrrrrrrrrrrrr');
-                  console.log(err);
-                  return response.status(404).json(err);
-                }
-              }
-            );
-            if (expiresInMinutes && textMessage) {
-              let newtext = 'Action expired';
-              setTimeout(function() {
-                nexmo.message.sendSms(
-                  from,
-                  to,
-                  newtext,
-                  { type: 'unicode' },
-                  (err, responseData) => {
-                    if (responseData) {
-                      const updatedAction = {};
-                      updatedAction.finishedDate = '2019-08-10T22:41:52.510Z';
-                      actionAPI.updateAction(
-                        updatedAction,
-                        actionID,
-                        (error, action) => {
-                          if (error) {
-                            return response.status(404).json(error);
-                          } else {
-                            return response.status(200).json({ s: 1 });
-                          }
-                        }
-                      );
-                      // return response.status(200).json({ s: 1 });
-                    }
-                    if (err) {
-                      console.log('errorrrrrrrrrrrrrrrr');
-                      console.log(err);
-                      return response.status(404).json(err);
-                    }
-                  }
-                );
-              }, 60000);
+            let validate = validatePhoneNumber(phoneNumber);
+            if (validate) {
+              //Validate phone number
+              // var nexmo = new Nexmo(
+              //   {
+              //     apiKey: '067908e3',
+              //     apiSecret: '2c0080ec581afde4',
+              //   },
+              //   { debug: true }
+              // );
+              // var from = 'Nexmo';
+              // // var to = '919995727516';
+              //  var to = phoneNumber;
+              // var text = 'A text message sent using the Nexmo SMS API';
+              // nexmo.message.sendSms(
+              //   from,
+              //   to,
+              //   text,
+              //   { type: 'unicode' },
+              //   (err, responseData) => {
+              //     if (responseData) {
+              //       return response.status(200).json({ s: 1 });
+              //     }
+              //     if (err) {
+              //       return response.status(404).json(err);
+              //     }
+              //   }
+              // );
             }
+            // if (expiresInMinutes && textMessage) {//Expiration check
+            //   let newtext = 'Action expired';
+            //   setTimeout(function () {
+            //     nexmo.message.sendSms(
+            //       from,
+            //       to,
+            //       newtext,
+            //       { type: 'unicode' },
+            //       (err, response) => {
+            //         if (response) {
+            //           const updatedAction = {};
+            //           updatedAction.finishedDate = '2019-08-10T22:41:52.510Z';
+            //           actionAPI.updateAction(
+            //             updatedAction,
+            //             actionID,
+            //             (error, action) => {
+            //               if (error) {
+            //                 return response.status(404).json(error);
+            //               } else {
+            //                 return response.status(200).json({ s: 1 });
+            //               }
+            //             }
+            //           );
+            //           // return response.status(200).json({ s: 1 });
+            //         }
+            //         if (err) {
+            //           return response.status(404).json(err);
+            //         }
+            //       }
+            //     );
+            //   }, 60000);
+            // }
+          }
+          if (error) {
+            console.log('profile errorrrrrrrrrrrrrrrrrr');
           }
         });
       }
     }
   });
+
+  function validatePhoneNumber(phoneNumber) {
+    console.log('phone enteredddddddddddddddddddd');
+    var expression = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
+    //var expression = "^(?:\(\d{3}\)|\d{3})[- ]?\d{3}[- ]?\d{4}$";
+    console.log('Phonenumber : ' + phoneNumber);
+    if (phoneNumber.match(expression)) {
+      console.log('phone number validdddddddddddddddddddddddddddddddddd');
+      return true;
+    } else {
+      console.log(
+        'phone number INNNNNNNNNNNvaliddddddddddddddddddddddddddddddddddd'
+      );
+      return false;
+    }
+  }
 
   // const newAction = req.body;
   // actionAPI.addAction(newAction, (error, action) => {
