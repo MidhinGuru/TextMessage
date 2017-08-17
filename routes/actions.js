@@ -282,8 +282,8 @@ router.post('/', (req, response) => {
                 {
                   // apiKey: '067908e3',
                   // apiSecret: '2c0080ec581afde4',
-                  apiKey: NEXMO_API_KEY,
-                  apiSecret: NEXMO_API_SECRET,
+                  apiKey: process.env.NEXMO_API_KEY,
+                  apiSecret: process.env.NEXMO_API_SECRET,
                 },
                 { debug: true }
               );
