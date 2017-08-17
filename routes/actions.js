@@ -269,12 +269,13 @@ router.post('/', (req, response) => {
         message: 'Action not saved',
       });
     } else {
-      if (action.action.actors.indexOf('text') > -1) {
-        let textMessage = action.action.textMessage;
-        let expiresInMinutes = action.action.expiresInMinutes;
-        let actionID = action.action._id;
-        var updatedFinishedDate = action.finishedDate;
+      let textMessage = action.action.textMessage;
+      let expiresInMinutes = action.action.expiresInMinutes;
+      let actionID = action.action._id;
+      var updatedFinishedDate = action.finishedDate;
 
+      if (action.action.actors.indexOf('text') > -1) {
+        console.log('ifffffffffffffffffff');
         actionAPI.getProfile(newAction.profileID, (error, profile) => {
           if (!error) {
             let phoneNumber = profile.phoneNumber;
@@ -294,8 +295,8 @@ router.post('/', (req, response) => {
           if (expiresInMinutes && textMessage) {
             //Expiration check
             let newTextMessage = 'Action expired';
+
             setTimeout(function() {
-              //nexmo.message.sendSms(from, to, newTextMessage);
               smsUtil.sendSms(from, to, newTextMessage);
             }, 60000);
           }
