@@ -5,12 +5,11 @@ const nexmo = new Nexmo({
   apiSecret: process.env.NEXMO_API_SECRET,
 });
 
-const sendSms = (from, to, textMessage) => {
-  console.log('Entered smsssssssssssssssssssssssss');
-  nexmo.message.sendSms(from, to, textMessage, (err, responseData) => {
-    if (err) {
+const sendSms = (to, textMessage) => {
+  nexmo.message.sendSms(to, textMessage, (error, responseData) => {
+    if (error) {
       console.error('Failed to send SMS');
-      console.log(err);
+      console.log(error);
     } else {
       console.log('Message send to ' + mobilenumber);
     }
@@ -19,8 +18,12 @@ const sendSms = (from, to, textMessage) => {
 
 const validatePhoneNumber = phoneNumber => {
   var expression = /^(\+\d{1,2}\s)?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$/;
-  if (phoneNumber.match(expression)) {
-    return true;
+  if (phoneNumber) {
+    if (phoneNumber.match(expression)) {
+      return true;
+    } else {
+      return false;
+    }
   } else {
     return false;
   }

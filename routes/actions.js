@@ -279,7 +279,7 @@ router.post('/', (req, response) => {
           let phoneNumber = profile.phoneNumber;
           let validate = smsUtil.validatePhoneNumber(phoneNumber);
           if (validate) {
-            let from = 'Nexmo';
+            //let from = 'Nexmo';
             let to = phoneNumber;
             let text = textMessage;
             let actionName = assignedAction.action.name;
@@ -288,14 +288,14 @@ router.post('/', (req, response) => {
               assignedAction.action.actors.indexOf('text') > -1 &&
               textMessage
             ) {
-              smsUtil.sendSms(from, to, text);
+              smsUtil.sendSms(to, text);
             } else {
               if (!updatedFinishedDate && updatedFinishedDate == null) {
                 if (expiresInMinutes && textMessage) {
                   //Action expiration check
                   let newTextMessage = 'Action(' + actionName + ') expired';
                   setTimeout(function() {
-                    smsUtil.sendSms(from, to, newTextMessage);
+                    smsUtil.sendSms(to, newTextMessage);
                   }, 60000);
                 }
               }
