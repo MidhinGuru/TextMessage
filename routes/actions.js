@@ -1,7 +1,6 @@
 import express, { Router } from 'express';
 import actionAPI from '../api/actionApi';
 import MongoQS from 'mongo-querystring';
-//import Nexmo from 'nexmo';
 import smsUtil from '../util/smsUtil';
 import request from 'request';
 
@@ -262,19 +261,19 @@ router.post('/', (req, response) => {
   if (newAction.action.actors.indexOf('text') > -1) {
     newAction.finishedDate = new Date();
   }
-  actionAPI.addAction(newAction, (error, action) => {
+  actionAPI.addAction(newAction, (error, assignedAction) => {
     if (error) {
       return response.status(404).json({
         success: false,
         message: 'Action not saved',
       });
     } else {
-      let textMessage = action.action.textMessage;
-      let expiresInMinutes = action.action.expiresInMinutes;
-      let actionID = action.action._id;
-      let updatedFinishedDate = action.finishedDate;
+      let textMessage = assignedAction.action.textMessage;
+      let expiresInMinutes = assignedAction.action.expiresInMinutes;
+      let actionID = assignedAction.actionID;
+      let updatedFinishedDate = assignedAction.finishedDate;
 
-      //if (action.action.actors.indexOf('text') > -1) {
+      //get the phone number from profile
       actionAPI.getProfile(newAction.profileID, (error, profile) => {
         if (!error) {
           let phoneNumber = profile.phoneNumber;
@@ -283,14 +282,17 @@ router.post('/', (req, response) => {
             let from = 'Nexmo';
             let to = phoneNumber;
             let text = textMessage;
-            let actionName = action.action.name;
+            let actionName = assignedAction.action.name;
 
-            if (action.action.actors.indexOf('text') > -1 && textMessage) {
+            if (
+              assignedAction.action.actors.indexOf('text') > -1 &&
+              textMessage
+            ) {
               smsUtil.sendSms(from, to, text);
             } else {
               if (!updatedFinishedDate && updatedFinishedDate == null) {
                 if (expiresInMinutes && textMessage) {
-                  //Expiration check
+                  //Action expiration check
                   let newTextMessage = 'Action(' + actionName + ') expired';
                   setTimeout(function() {
                     smsUtil.sendSms(from, to, newTextMessage);
@@ -301,7 +303,7 @@ router.post('/', (req, response) => {
           }
         }
       });
-      return response.status(201).json(action);
+      return response.status(201).json(assignedAction);
     }
   });
 });
