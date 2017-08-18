@@ -6,7 +6,8 @@ const nexmo = new Nexmo({
 });
 
 const sendSms = (to, textMessage) => {
-  nexmo.message.sendSms(to, textMessage, (error, responseData) => {
+  let from = 'Nexmo';
+  nexmo.message.sendSms(from, to, textMessage, (error, responseData) => {
     if (error) {
       console.error('Failed to send SMS');
       console.log(error);

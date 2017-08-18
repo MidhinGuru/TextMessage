@@ -279,11 +279,9 @@ router.post('/', (req, response) => {
           let phoneNumber = profile.phoneNumber;
           let validate = smsUtil.validatePhoneNumber(phoneNumber);
           if (validate) {
-            //let from = 'Nexmo';
             let to = phoneNumber;
             let text = textMessage;
             let actionName = assignedAction.action.name;
-
             if (
               assignedAction.action.actors.indexOf('text') > -1 &&
               textMessage
@@ -296,7 +294,7 @@ router.post('/', (req, response) => {
                   let newTextMessage = 'Action(' + actionName + ') expired';
                   setTimeout(function() {
                     smsUtil.sendSms(to, newTextMessage);
-                  }, 60000);
+                  }, expiresInMinutes * 60000);
                 }
               }
             }
