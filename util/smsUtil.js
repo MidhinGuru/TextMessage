@@ -5,14 +5,14 @@ const nexmo = new Nexmo({
   apiSecret: process.env.NEXMO_API_SECRET,
 });
 
-const sendSms = (to, textMessage) => {
-  let from = 'Nexmo';
+const sendSMS = (to, textMessage) => {
+  let from = process.env.NEXMO_API_FROM;
   nexmo.message.sendSms(from, to, textMessage, (error, responseData) => {
     if (error) {
       console.error('Failed to send SMS');
       console.log(error);
     } else {
-      console.log('Message send to ' + mobilenumber);
+      console.log('Message sent to ' + to);
     }
   });
 };
@@ -31,6 +31,6 @@ const validatePhoneNumber = phoneNumber => {
 };
 
 module.exports = {
-  sendSms: sendSms,
+  sendSMS: sendSMS,
   validatePhoneNumber: validatePhoneNumber,
 };

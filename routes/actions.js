@@ -287,14 +287,14 @@ router.post('/', (request, response) => {
               assignedAction.action.actors.indexOf('text') > -1 &&
               textMessage
             ) {
-              smsUtil.sendSms(to, text);
+              smsUtil.sendSMS(to, text);
             } else {
               if (!updatedFinishedDate && updatedFinishedDate == null) {
                 if (expiresInMinutes && textMessage) {
                   //Action expiration check
                   let newTextMessage = 'Action(' + actionName + ') expired';
                   setTimeout(() => {
-                    smsUtil.sendSms(to, newTextMessage);
+                    smsUtil.sendSMS(to, newTextMessage);
                   }, expiresInMinutes * 60000);
                 }
               }
