@@ -12,6 +12,7 @@ const urlQuery = new MongoQS({
   custom: {
     bbox: 'geojson',
     near: 'geojson',
+    after: 'createdDate',
   },
 });
 
@@ -50,6 +51,7 @@ const urlQuery = new MongoQS({
 *    "expirationDate": "2018-07-27T09:30:42.213Z",
 *    "startedDate": "2017-07-27T09:29:42.214Z",
 *    "finishedDate": null,
+*    "createdDate": "2017-08-04T08:01:16.341Z",
 *    "isCompleted": false,
 *    "isExpired": false,
 *    "_id": "5979b286a591a9455c2846c4"
@@ -163,6 +165,7 @@ router.get('/', (req, response) => {
 *    "expirationDate": "2017-07-27T09:30:42.213Z",
 *    "startedDate": "2017-07-27T09:29:42.214Z",
 *    "finishedDate": "2017-12-04T18:30:00.000Z",
+*    "createdDate": "2017-08-04T08:01:16.341Z",
 *    "isCompleted": true,
 *    "isExpired": true,
 *    "_id": "5979b286a591a9455c2846c4"
@@ -242,6 +245,7 @@ router.get('/:id', (req, response) => {
 *    "expirationDate": "2018-07-27T09:30:42.213Z",
 *    "startedDate": null,
 *    "finishedDate": null,
+*    "createdDate": "2017-08-04T08:01:16.341Z",
 *    "isCompleted": false,
 *    "isExpired": false,
 *    "_id": "5979b286a591a9455c2846c4"
@@ -258,9 +262,9 @@ router.get('/:id', (req, response) => {
 
 router.post('/', (req, response) => {
   const newAction = req.body;
-  if (newAction.action.actors.indexOf('text') > -1) {
-    newAction.finishedDate = new Date();
-  }
+  // if (newAction.action.actors.indexOf('text') > -1) {
+  //   newAction.finishedDate = new Date();
+  // }
   actionAPI.addAction(newAction, (error, assignedAction) => {
     if (error) {
       return response.status(404).json({
@@ -286,13 +290,28 @@ router.post('/', (req, response) => {
               assignedAction.action.actors.indexOf('text') > -1 &&
               textMessage
             ) {
-              smsUtil.sendSms(to, text);
+              smsUtil.sendSms(to, text, (error, response) => {
+                if (!error) {
+                  //Update finished date
+                  let updatedAction = {};
+                  updatedAction.finishedDate = new Date();
+                  actionAPI.updateAction(
+                    updatedAction,
+                    actionID,
+                    (error, action) => {
+                      if (error) {
+                        throw error;
+                      }
+                    }
+                  );
+                }
+              });
             } else {
               if (!updatedFinishedDate && updatedFinishedDate == null) {
                 if (expiresInMinutes && textMessage) {
                   //Action expiration check
                   let newTextMessage = 'Action(' + actionName + ') expired';
-                  setTimeout(function() {
+                  setTimeout(() => {
                     smsUtil.sendSms(to, newTextMessage);
                   }, expiresInMinutes * 60000);
                 }
