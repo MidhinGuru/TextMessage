@@ -29,9 +29,14 @@ const addAction = (newAction, callback) => {
   assignedAction.actionID = newAction.actionID;
   assignedAction.action = newAction.action;
   assignedAction.profileID = newAction.profileID;
-  assignedAction.expirationDate = currentDate.setMinutes(
-    currentDate.getMinutes() + newAction.action.expiresInMinutes
-  );
+  if (
+    newAction.action.expiresInMinutes &&
+    newAction.action.expiresInMinutes != null
+  ) {
+    assignedAction.expirationDate = currentDate.setMinutes(
+      currentDate.getMinutes() + newAction.action.expiresInMinutes
+    );
+  }
   assignedAction.startedDate = null;
   assignedAction.finishedDate = null;
   if (

@@ -267,6 +267,7 @@ router.post('/', (request, response) => {
       return response.status(404).json({
         success: false,
         message: 'Action not saved',
+        error,
       });
     } else {
       let expiresInMinutes = assignedAction.action.expiresInMinutes;
