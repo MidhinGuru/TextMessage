@@ -2,7 +2,6 @@ import express, { Router } from 'express';
 import actionAPI from '../api/actionApi';
 import MongoQS from 'mongo-querystring';
 import smsUtil from '../util/smsUtil';
-import request from 'request';
 
 const router = Router();
 
@@ -66,10 +65,10 @@ const urlQuery = new MongoQS({
 *
 */
 
-router.get('/', (req, response) => {
+router.get('/', (request, response) => {
   let mongofilter = {};
-  if (req.query) {
-    mongofilter = urlQuery.parse(req.query);
+  if (request.query) {
+    mongofilter = urlQuery.parse(request.query);
     //As userType does not exist in database, cannot be queried using userType column.
     //So mongodb filter replaced with action.actors for getting data
     if (mongofilter.userType) {
@@ -180,8 +179,8 @@ router.get('/', (req, response) => {
 *
 */
 
-router.get('/:id', (req, response) => {
-  const id = req.params.id;
+router.get('/:id', (request, response) => {
+  const id = request.params.id;
   actionAPI.getAction(id, (error, action) => {
     if (error) {
       return response.status(404).json({
@@ -260,12 +259,9 @@ router.get('/:id', (req, response) => {
 *
 */
 
-router.post('/', (req, response) => {
-  const newAction = req.body;
+router.post('/', (request, response) => {
+  const newAction = request.body;
   let textMessage = newAction.action.textMessage;
-  // if (newAction.action.actors.indexOf('text') > -1 && textMessage) {
-  //   newAction.finishedDate = new Date();
-  // }
   actionAPI.addAction(newAction, (error, assignedAction) => {
     if (error) {
       return response.status(404).json({
@@ -273,7 +269,6 @@ router.post('/', (req, response) => {
         message: 'Action not saved',
       });
     } else {
-      // let textMessage = assignedAction.action.textMessage;
       let expiresInMinutes = assignedAction.action.expiresInMinutes;
       let actionID = assignedAction.actionID;
       let updatedFinishedDate = assignedAction.finishedDate;
@@ -372,9 +367,9 @@ router.post('/', (req, response) => {
 *
 */
 
-router.put('/:id', (req, response) => {
-  const updatedAction = req.body;
-  const id = req.params.id;
+router.put('/:id', (request, response) => {
+  const updatedAction = request.body;
+  const id = request.params.id;
   actionAPI.updateAction(updatedAction, id, (error, action) => {
     if (error) {
       return response.status(404).json({
@@ -410,8 +405,8 @@ router.put('/:id', (req, response) => {
 *
 */
 
-router.delete('/:id', (req, response) => {
-  const id = req.params.id;
+router.delete('/:id', (request, response) => {
+  const id = request.params.id;
   actionAPI.deleteAction(id, (error, message) => {
     if (error) {
       return response.status(404).json({
