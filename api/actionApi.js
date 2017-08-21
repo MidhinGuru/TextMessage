@@ -34,11 +34,12 @@ const addAction = (newAction, callback) => {
   );
   assignedAction.startedDate = null;
   assignedAction.finishedDate = null;
-  // if (newAction.action.actors.indexOf('text') <= -1) {
-  //   assignedAction.finishedDate = null;
-  // } else {
-  //   assignedAction.finishedDate = newAction.finishedDate;
-  // }
+  if (
+    newAction.action.actors.indexOf('text') > -1 &&
+    newAction.action.textMessage
+  ) {
+    assignedAction.finishedDate = new Date();
+  }
   assignedAction.createdDate = currentDate;
   const action = new AssignedAction(assignedAction);
   return action.save(callback);

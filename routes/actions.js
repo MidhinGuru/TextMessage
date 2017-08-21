@@ -262,7 +262,8 @@ router.get('/:id', (req, response) => {
 
 router.post('/', (req, response) => {
   const newAction = req.body;
-  // if (newAction.action.actors.indexOf('text') > -1) {
+  let textMessage = newAction.action.textMessage;
+  // if (newAction.action.actors.indexOf('text') > -1 && textMessage) {
   //   newAction.finishedDate = new Date();
   // }
   actionAPI.addAction(newAction, (error, assignedAction) => {
@@ -272,9 +273,9 @@ router.post('/', (req, response) => {
         message: 'Action not saved',
       });
     } else {
-      let textMessage = assignedAction.action.textMessage;
+      // let textMessage = assignedAction.action.textMessage;
       let expiresInMinutes = assignedAction.action.expiresInMinutes;
-      let actionID = assignedAction._id;
+      let actionID = assignedAction.actionID;
       let updatedFinishedDate = assignedAction.finishedDate;
 
       //get the phone number from profile
@@ -290,23 +291,7 @@ router.post('/', (req, response) => {
               assignedAction.action.actors.indexOf('text') > -1 &&
               textMessage
             ) {
-              assignedAction.finishedDate = new Date();
-              smsUtil.sendSms(to, text, (error, response) => {
-                if (!error) {
-                  //Update finished date
-                  let updatedAction = {};
-                  updatedAction.finishedDate = assignedAction.finishedDate;
-                  actionAPI.updateAction(
-                    updatedAction,
-                    actionID,
-                    (error, action) => {
-                      if (error) {
-                        throw error;
-                      }
-                    }
-                  );
-                }
-              });
+              smsUtil.sendSms(to, text);
             } else {
               if (!updatedFinishedDate && updatedFinishedDate == null) {
                 if (expiresInMinutes && textMessage) {
@@ -319,9 +304,9 @@ router.post('/', (req, response) => {
               }
             }
           }
-          return response.status(201).json(assignedAction);
         }
       });
+      return response.status(201).json(assignedAction);
     }
   });
 });
