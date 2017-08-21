@@ -274,7 +274,7 @@ router.post('/', (req, response) => {
     } else {
       let textMessage = assignedAction.action.textMessage;
       let expiresInMinutes = assignedAction.action.expiresInMinutes;
-      let actionID = assignedAction.actionID;
+      let actionID = assignedAction._id;
       let updatedFinishedDate = assignedAction.finishedDate;
 
       //get the phone number from profile
@@ -290,11 +290,12 @@ router.post('/', (req, response) => {
               assignedAction.action.actors.indexOf('text') > -1 &&
               textMessage
             ) {
+              assignedAction.finishedDate = new Date();
               smsUtil.sendSms(to, text, (error, response) => {
                 if (!error) {
                   //Update finished date
                   let updatedAction = {};
-                  updatedAction.finishedDate = new Date();
+                  updatedAction.finishedDate = assignedAction.finishedDate;
                   actionAPI.updateAction(
                     updatedAction,
                     actionID,
@@ -318,9 +319,9 @@ router.post('/', (req, response) => {
               }
             }
           }
+          return response.status(201).json(assignedAction);
         }
       });
-      return response.status(201).json(assignedAction);
     }
   });
 });
